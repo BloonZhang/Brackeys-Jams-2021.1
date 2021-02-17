@@ -31,7 +31,7 @@ public class PlatformController : MonoBehaviour
     // Trigger2D methods
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.name == "TrackTilemap") { direction = !direction; };
+        if (col.gameObject.tag == "Track") { direction = !direction; };
     }
     void OnTriggerStay2D(Collider2D col)
     {

@@ -1,19 +1,13 @@
 fileFormatVersion: 2
-guid: cb055c97c341f554d945ee7ae368458a
+guid: 9d2afeb86810a564cbe0d2d87b9ea819
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8051449374567226780
-    second: test-tilemap_0
+      213: 2046680700710943729
+    second: test-tilemap-ladder_0
   - first:
-      213: 6816502797560649829
-    second: test-tilemap_1
-  - first:
-      213: 6176777356351364918
-    second: test-tilemap_2
-  - first:
-      213: -3456398577729627833
-    second: test-tilemap_3
+      213: -4995143899505592893
+    second: test-tilemap-ladder_1
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -115,49 +109,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: test-tilemap_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 64
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c9dde1a3c8e7cbf60800000000000000
-      internalID: 8051449374567226780
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: test-tilemap_1
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 64
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 32}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5681f03dd25199e50800000000000000
-      internalID: 6816502797560649829
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: test-tilemap_2
+      name: test-tilemap-ladder_0
       rect:
         serializedVersion: 2
         x: 0
@@ -166,23 +118,23 @@ TextureImporter:
         height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 14, y: 0, z: 14, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape:
-      - - {x: -32, y: 32}
-        - {x: -32, y: 17}
-        - {x: 32, y: 17}
-        - {x: 32, y: 32}
+      - - {x: -1, y: -32}
+        - {x: -1, y: 26}
+        - {x: 1, y: 26}
+        - {x: 1, y: -32}
       tessellationDetail: 0
       bones: []
-      spriteID: 63fdff5974258b550800000000000000
-      internalID: 6176777356351364918
+      spriteID: 1fbf586e045476c10800000000000000
+      internalID: 2046680700710943729
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: test-tilemap_3
+      name: test-tilemap-ladder_1
       rect:
         serializedVersion: 2
         x: 64
@@ -194,14 +146,14 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape:
-      - - {x: -32, y: 16}
-        - {x: -32, y: 32}
-        - {x: 32, y: 32}
-        - {x: 32, y: 16}
+      - - {x: 1, y: -32}
+        - {x: 1, y: 32}
+        - {x: -1, y: 32}
+        - {x: -1, y: -32}
       tessellationDetail: 0
       bones: []
-      spriteID: 749924c6ec76800d0800000000000000
-      internalID: -3456398577729627833
+      spriteID: 3c5720cb61fadaab0800000000000000
+      internalID: -4995143899505592893
       vertices: []
       indices: 
       edges: []

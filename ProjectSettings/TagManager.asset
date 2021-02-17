@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ladder
+  - Track
+  - Ground
+  - LadderTop
   layers:
   - Default
   - TransparentFX
@@ -14,6 +18,8 @@ TagManager:
   - Ground
   - Track
   - MovingPlatform
+  - PlayerBullet
+  - Ladder
   - 
   - 
   - 
@@ -34,9 +40,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
+  - HelperLayer
   m_SortingLayers:
   - name: Default
     uniqueID: 0

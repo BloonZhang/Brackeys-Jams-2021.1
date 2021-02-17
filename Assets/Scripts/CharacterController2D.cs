@@ -9,12 +9,18 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField] private LayerMask m_WhatIsGround;                          // A mask determining what is ground to the character
     [SerializeField] private Transform m_GroundCheck;                           // A position marking where to check if the player is grounded.
 
-    const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
+    const float k_GroundedRadius = .05f; // Radius of the overlap circle to determine if grounded
     private bool m_Grounded;            // Whether or not the player is grounded.
     const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
     private Rigidbody2D m_Rigidbody2D;
     private bool m_FacingRight = true;  // For determining which way the player is currently facing.
     private Vector3 m_Velocity = Vector3.zero;
+
+    // Helper properties
+    public bool FacingRight { get { return m_FacingRight; } }
+    public bool Grounded { get { return m_Grounded; } }
+    public Transform GroundCheck { get { return m_GroundCheck; } } 
+    public LayerMask WhatIsGround { get { return m_WhatIsGround; } }
 
     [Header("Events")]
     [Space]
@@ -82,6 +88,14 @@ public class CharacterController2D : MonoBehaviour
             m_Grounded = false;
             m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
         }
+    }
+
+    public void Climb(float move)
+    {
+        // Move the character by finding the target velocity
+        Vector3 targetVelocity = new Vector2(0, move * 10f);
+        // And then smoothing it out and applying it to the character
+        m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
     }
 
 
