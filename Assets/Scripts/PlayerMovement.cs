@@ -9,8 +9,8 @@ public class PlayerMovement : MonoBehaviour
     public CharacterController2D controller;
 
     // definition variables
-    public float runSpeed = 40f;
-    private float climbSpeed = 20f;
+    public float runSpeed; //17f
+    public float climbSpeed; //14f
 
     // misc variables
     private int playerLayer = 3;
@@ -37,7 +37,6 @@ public class PlayerMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update () {
-
         // set movement variables
         horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
         verticalMove = Input.GetAxisRaw("Vertical") * climbSpeed;
@@ -54,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         // On ladder physics
+        // TODO: be able to face different directions on ladder
         if (onLadder)
         {
             // Just to make sure
