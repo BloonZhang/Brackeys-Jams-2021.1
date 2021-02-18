@@ -20,9 +20,9 @@ TagManager:
   - MovingPlatform
   - PlayerBullet
   - Ladder
-  - 
-  - 
-  - 
+  - EnemyBullet
+  - Enemy
+  - PlayerHitbox
   - 
   - 
   - 
