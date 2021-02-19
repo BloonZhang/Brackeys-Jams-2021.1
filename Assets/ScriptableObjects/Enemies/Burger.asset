@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 216c9e6ee43faa24dafdc83c5647deee, type: 3}
+  m_Name: Burger
+  m_EditorClassIdentifier: 
+  name: Burger
+  maxHealth: 4
+  attackStrength: 1
+  invincibleWhileIdle: 0
+  shotCooldown: 2
+  aggroDistance: 0
+  sprite: {fileID: 21300000, guid: 8fb30a0e8df6c90498a462f13c560e95, type: 3}
+  shootPointOffset: {x: 0.4, y: 0}
+  bulletPrefab: {fileID: 1543297332013883663, guid: c1983b0cdce11dd4693b20760c923103, type: 3}
+  bulletPattern: {fileID: 11400000, guid: 55d096a15d659074da28cb0ef2c53b77, type: 2}
