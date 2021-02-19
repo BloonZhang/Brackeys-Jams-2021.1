@@ -8,6 +8,7 @@ TagManager:
   - Track
   - Ground
   - LadderTop
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - EnemyBullet
   - Enemy
   - PlayerHitbox
-  - 
+  - EnemyHitbox
   - 
   - 
   - 
