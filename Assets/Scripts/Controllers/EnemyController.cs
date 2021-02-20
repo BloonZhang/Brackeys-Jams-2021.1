@@ -21,7 +21,6 @@ public class EnemyController : MonoBehaviour
     private int m_maxHealth;
     private int m_damage;
     private bool m_invincibleWhileIdle;
-    private float m_delayBetweenShots;
     private float m_aggroDistance;
     public float m_walkSpeed;
     public float m_runSpeed;
@@ -37,8 +36,9 @@ public class EnemyController : MonoBehaviour
 
     // helper variables
     private float timer;
-    public bool facingRight = true;    // TODO: add facingRight logic
-    private bool isIdle = true;         // TODO: add isIdle logic. remember to reset aipattern when switching
+    public bool facingRight = true;
+    private bool isIdle = true;
+    private int currentHealth;
 
     void Awake()
     {
@@ -46,6 +46,7 @@ public class EnemyController : MonoBehaviour
         InitializeEnemy();
         m_idleAI.Initialize(this.gameObject);
         m_aggroAI.Initialize(this.gameObject);
+        currentHealth = m_maxHealth;
     }
 
     void FixedUpdate()
@@ -85,35 +86,11 @@ public class EnemyController : MonoBehaviour
         theScale.x *= -1;
         this.transform.localScale = theScale;
     }
-
-    // helper methods
-    private void InitializeEnemy()
-    {
-        // Simple
-        m_name = enemyDefinitions.name;
-        m_maxHealth = enemyDefinitions.maxHealth;
-        m_invincibleWhileIdle = enemyDefinitions.invincibleWhileIdle;
-        m_delayBetweenShots = enemyDefinitions.shotCooldown;
-        m_aggroDistance = enemyDefinitions.aggroDistance;
-        m_walkSpeed = enemyDefinitions.walkSpeed;
-        m_runSpeed = enemyDefinitions.runSpeed;
-        // Complex
-        this.GetComponent<SpriteRenderer>().sprite = enemyDefinitions.sprite;
-        m_projectilePrefab = enemyDefinitions.bulletPrefab;
-        m_BulletPattern = enemyDefinitions.bulletPattern;
-        m_idleAI = enemyDefinitions.idleAI;
-        m_aggroAI = enemyDefinitions.aggroAI;
-
-        // Check if bullet pattern SO is valid.
-        // TODO: automatic way to do this?
-        // TODO: move to bulletcontroller?
-        if (m_BulletPattern.numberOfBullets != m_BulletPattern.listOfAngles.Count || 
-            m_BulletPattern.listOfAngles.Count != 1 + m_BulletPattern.delayBetweenBullets.Count)
-        {
-            Debug.Log("ERROR with Bullet Pattern for enemy: " + m_name);
-        }
+    public void TakeDamage(int damage) 
+    { 
+        currentHealth -= damage; 
+        if (currentHealth <= 0) { Death(); } 
     }
-
 
     // Coroutines
     private IEnumerator FireCoroutine()
@@ -130,6 +107,7 @@ public class EnemyController : MonoBehaviour
             bullet.GetComponent<Rigidbody2D>().velocity = new Vector3(  m_BulletPattern.bulletSpeed * Mathf.Cos(Mathf.Deg2Rad * m_BulletPattern.listOfAngles[i]) * (facingRight ? 1 : -1),
                                                                         m_BulletPattern.bulletSpeed * Mathf.Sin(Mathf.Deg2Rad * m_BulletPattern.listOfAngles[i]),
                                                                         0);
+            bullet.GetComponent<EnemyBulletController>().DefineBulletDamage(m_damage);
             // wait for x seconds if not 0 seconds (and also if not last bullets)
             if (i < m_BulletPattern.numberOfBullets - 1) 
             {
@@ -139,5 +117,41 @@ public class EnemyController : MonoBehaviour
         }
         yield return null;
     }
+
+    // helper methods
+    private void InitializeEnemy()
+    {
+        // Simple
+        m_name = enemyDefinitions.name;
+        m_maxHealth = enemyDefinitions.maxHealth;
+        m_invincibleWhileIdle = enemyDefinitions.invincibleWhileIdle;
+        m_aggroDistance = enemyDefinitions.aggroDistance;
+        m_walkSpeed = enemyDefinitions.walkSpeed;
+        m_runSpeed = enemyDefinitions.runSpeed;
+        m_damage = enemyDefinitions.damagePerBullet;
+        // Complex
+        this.GetComponent<SpriteRenderer>().sprite = enemyDefinitions.sprite;
+        m_projectilePrefab = enemyDefinitions.bulletPrefab;
+        m_BulletPattern = enemyDefinitions.bulletPattern;
+        m_idleAI = enemyDefinitions.idleAI;
+        m_aggroAI = enemyDefinitions.aggroAI;
+
+        // Check if bullet pattern SO is valid.
+        // TODO: automatic way to do this?
+        // TODO: move to bulletcontroller?
+        if (m_BulletPattern.numberOfBullets != m_BulletPattern.listOfAngles.Count || 
+            m_BulletPattern.listOfAngles.Count != 1 + m_BulletPattern.delayBetweenBullets.Count)
+        {
+            Debug.Log("ERROR with Bullet Pattern for enemy: " + m_name);
+        }
+    }
+    private void Death()
+    {
+        Debug.Log("enemy: " + this.name + " died");
+        // TODO: explosion effect
+        Destroy(this.gameObject);
+    }
+
+
 
 }

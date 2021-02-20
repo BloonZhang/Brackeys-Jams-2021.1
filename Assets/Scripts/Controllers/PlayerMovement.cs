@@ -38,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update () {
         // set movement variables
+        // TODO: if PlayerController.stunned == true, then no movement
         horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
         verticalMove = Input.GetAxisRaw("Vertical") * climbSpeed;
 

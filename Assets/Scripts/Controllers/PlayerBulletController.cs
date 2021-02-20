@@ -9,11 +9,15 @@ public class PlayerBulletController : MonoBehaviour
     private static int numberOfBulletsOnScreen = 0;
     //public static int NumberOfBulletsOnScreen { get { return numberOfBulletsOnScreen; } }
 
+    // abbreviation variables
+    private int enemyHitboxLayer = 14;
+
     // definition properties
     private static int maxBulletsOnScreen = 3;
     //public static int MaxBulletsOnScreen { get { return maxBulletsOnScreen; } }
-    private static float bulletSpeed = 500f;
-    private static float timeOnScreen = 1.5f;
+    private float bulletSpeed = 500f;
+    private float timeOnScreen = 1.5f;
+    private int damage;
 
     // helper variables
     private float timer = 0f;
@@ -42,13 +46,24 @@ public class PlayerBulletController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        // TODO: damage if enemy
+        if(col.gameObject.layer == enemyHitboxLayer) 
+        { 
+            EnemyController enemyHit = col.transform.parent.GetComponent<EnemyController>();
+            if (enemyHit == null) { Debug.Log("No EnemyController found in PlayerBulletController.OnTriggerEnter2D"); }
+            else { enemyHit.TakeDamage(damage); }
+        }
         RemoveBullet();
     }
 
     void OnDestroy()
     {
         --numberOfBulletsOnScreen;
+    }
+
+    // "constructor" methods
+    public void DefineBulletDamage(int damageToDeal)
+    {
+        this.damage = damageToDeal;
     }
 
     // public methods

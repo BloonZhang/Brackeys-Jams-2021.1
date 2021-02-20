@@ -33,6 +33,10 @@ public class EnemyBulletController : MonoBehaviour
     {
         timeOnScreen = time;
     }
+    public void DefineBulletDamage(int damageToDeal)
+    {
+        this.damage = damageToDeal;
+    }
 
     void OnTriggerEnter2D(Collider2D col)
     {

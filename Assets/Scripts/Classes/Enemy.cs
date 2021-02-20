@@ -8,12 +8,11 @@ public class Enemy : ScriptableObject
     // Basic variables
     public string name;
     public int maxHealth;
-    public int attackStrength;
     public bool invincibleWhileIdle;
-    public float shotCooldown;
     public float aggroDistance;
     public float walkSpeed;
     public float runSpeed;
+    public int damagePerBullet;
 
     // Complex variables
     public Sprite sprite;

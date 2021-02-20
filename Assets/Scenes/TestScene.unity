@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 6895480043655725818, guid: a52eeafa647fdbd41b2b179f5fbc1cca, type: 3}
+  damage: 1
 --- !u!1 &213669381
 GameObject:
   m_ObjectHideFlags: 0
@@ -6984,6 +6985,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpText: {fileID: 1205163281}
   maxHealth: 10
+  timeInvincibleAfterHit: 1
 --- !u!1 &1850038023
 GameObject:
   m_ObjectHideFlags: 0
@@ -9380,11 +9382,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 452141523702897391, guid: 34de5120099424b4f93b4fb49ac3b1ad, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.73
+      value: 3.35
       objectReference: {fileID: 0}
     - target: {fileID: 452141523702897391, guid: 34de5120099424b4f93b4fb49ac3b1ad, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.82
+      value: -3.26
       objectReference: {fileID: 0}
     - target: {fileID: 452141523702897391, guid: 34de5120099424b4f93b4fb49ac3b1ad, type: 3}
       propertyPath: m_LocalPosition.z
