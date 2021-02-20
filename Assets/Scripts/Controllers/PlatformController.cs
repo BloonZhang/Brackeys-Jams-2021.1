@@ -38,7 +38,7 @@ public class PlatformController : MonoBehaviour
         // For making the player stick on the platform
         if (col.gameObject.tag == "Player") 
         { 
-            playerOnPlatform = col.gameObject; 
+            playerOnPlatform = col.gameObject.transform.parent.gameObject; 
             offset = playerOnPlatform.transform.position - transform.position;
         }
     }

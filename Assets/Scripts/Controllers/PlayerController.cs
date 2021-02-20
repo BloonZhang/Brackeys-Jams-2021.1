@@ -17,16 +17,23 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int maxHealth;
     private int currentHealth;
     public int CurrentHealth {get { return currentHealth; } }
+    [SerializeField] private int maxSpecial;
+    private int currentSpecial;
+    public int CurrentSpecial { get { return currentSpecial; } }
 
     // definition variables
     [SerializeField] private float timeInvincibleAfterHit;
     //[SerializeField] private float timeStunnedAfterHit;
+    private float healRate = 10f;   // How fast the player heals over time from a pickup
 
     // helper variables
     private bool invincible = false;
     private float invincibilityTimer = 0f;
     //private bool stunned;
     //private float stunTimer = 0f;
+    private float healthToHeal;     // determines how much health must be healed
+    private float specialToRecover;
+    private bool currentlyHealing = false;
 
 
     void Awake()
@@ -37,6 +44,7 @@ public class PlayerController : MonoBehaviour
 
         // Set up variables
         currentHealth = maxHealth;
+        currentSpecial = maxSpecial;
     }
 
 
@@ -83,6 +91,40 @@ public class PlayerController : MonoBehaviour
         if (currentHealth <= 0) { Death(); }
         BecomeInvincible();
         //BecomeStunned();
+    }
+    public void Heal(int healing, int recovery)
+    {
+        healthToHeal += healing;
+        specialToRecover += recovery;
+        if (!currentlyHealing) { StartCoroutine(HealOverTime()); }
+    }
+
+    // Coroutines
+    private IEnumerator HealOverTime()
+    {
+        currentlyHealing = true;
+        // while there's still healing left to do
+        while (healthToHeal > 0 || specialToRecover > 0)
+        {
+            // Health section
+            if (currentHealth == maxHealth) { healthToHeal = 0; }
+            else 
+            {
+                currentHealth += 1; healthToHeal -= 1;
+            }
+            // Special section
+            if (currentSpecial == maxSpecial) { specialToRecover = 0; }
+            else
+            {
+                currentSpecial += 1; specialToRecover -= 1;
+            }
+            // continue if not done healing
+            if (healthToHeal > 0 || specialToRecover > 0) { yield return new WaitForSeconds(1f / healRate); }
+            else { break; }
+        }
+        // done healing
+        currentlyHealing = false;
+        yield return null; 
     }
 
     // helper methods
