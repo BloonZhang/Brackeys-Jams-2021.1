@@ -23,29 +23,67 @@ public class EnemyController : MonoBehaviour
     private bool m_invincibleWhileIdle;
     private float m_delayBetweenShots;
     private float m_aggroDistance;
+    public float m_walkSpeed;
+    public float m_runSpeed;
     // Complex
     private GameObject m_projectilePrefab;
     private BulletPattern m_BulletPattern;
+    private AIPattern m_idleAI;
+    private AIPattern m_aggroAI;
+
+    // settings variables
+    private float aggroYRange = 7f;      // TODO: maybe in Enemy SO? hardcode for now
+    private float aggroFeathering = 2f;   // hysteresis for aggro distance
 
     // helper variables
     private float timer;
-    private bool facingRight = true;    // TODO: correct facingRight logic
+    public bool facingRight = true;    // TODO: add facingRight logic
+    private bool isIdle = true;         // TODO: add isIdle logic. remember to reset aipattern when switching
 
     void Awake()
     {
         // Set up the enemy variables
         InitializeEnemy();
+        m_idleAI.Initialize(this.gameObject);
+        m_aggroAI.Initialize(this.gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        timer += Time.deltaTime;
-        if (timer > m_delayBetweenShots)
+        // check if aggro state needs to be changed
+        //float distanceToPlayer = Vector3.Distance(this.gameObject.transform, PlayerController.Instance.gameObject.transform);
+        float distanceXToPlayer = Mathf.Abs(this.gameObject.transform.position.x - PlayerController.Instance.gameObject.transform.position.x);
+        float distanceYToPlayer = Mathf.Abs(this.gameObject.transform.position.y - PlayerController.Instance.gameObject.transform.position.y);
+        if (isIdle && distanceYToPlayer < aggroYRange && distanceXToPlayer < m_aggroDistance)
         {
-            timer = 0;
-            StartCoroutine(Fire());
+            Debug.Log("aggro!");
+            // TODO: face player
+            isIdle = false;
+            m_idleAI.StopAIPattern();
+            m_aggroAI.StartAIPattern();
         }
+        if (!isIdle && (distanceYToPlayer > aggroYRange + aggroFeathering || distanceXToPlayer > m_aggroDistance + aggroFeathering))
+        {
+            Debug.Log("lost aggro");
+            isIdle = true;
+            m_aggroAI.StopAIPattern();
+            m_idleAI.StartAIPattern();
+        }
+
+        // AIPattern behavior
+        if (isIdle) { m_idleAI.UpdateAIPattern(Time.fixedDeltaTime); }
+        else { m_aggroAI.UpdateAIPattern(Time.fixedDeltaTime); }
+    }
+
+    // public methods
+    public void Fire() { StartCoroutine(FireCoroutine()); }
+    public void TurnAround()
+    {
+        facingRight = !facingRight;
+        // Multiply the x local scale by -1.
+        Vector3 theScale = this.transform.localScale;
+        theScale.x *= -1;
+        this.transform.localScale = theScale;
     }
 
     // helper methods
@@ -57,20 +95,28 @@ public class EnemyController : MonoBehaviour
         m_invincibleWhileIdle = enemyDefinitions.invincibleWhileIdle;
         m_delayBetweenShots = enemyDefinitions.shotCooldown;
         m_aggroDistance = enemyDefinitions.aggroDistance;
+        m_walkSpeed = enemyDefinitions.walkSpeed;
+        m_runSpeed = enemyDefinitions.runSpeed;
         // Complex
         this.GetComponent<SpriteRenderer>().sprite = enemyDefinitions.sprite;
         m_projectilePrefab = enemyDefinitions.bulletPrefab;
         m_BulletPattern = enemyDefinitions.bulletPattern;
+        m_idleAI = enemyDefinitions.idleAI;
+        m_aggroAI = enemyDefinitions.aggroAI;
 
         // Check if bullet pattern SO is valid.
         // TODO: automatic way to do this?
+        // TODO: move to bulletcontroller?
         if (m_BulletPattern.numberOfBullets != m_BulletPattern.listOfAngles.Count || 
             m_BulletPattern.listOfAngles.Count != 1 + m_BulletPattern.delayBetweenBullets.Count)
         {
             Debug.Log("ERROR with Bullet Pattern for enemy: " + m_name);
         }
     }
-    private IEnumerator Fire()
+
+
+    // Coroutines
+    private IEnumerator FireCoroutine()
     {
         // For each bullet in the list, fire at the specified angle with the specified speed
         // then wait for the specified time
@@ -93,7 +139,5 @@ public class EnemyController : MonoBehaviour
         }
         yield return null;
     }
-
-
 
 }

@@ -212,7 +212,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 100
+  m_Mass: 50
   m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -233,4 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ac8db6760c66d94ebffde76a2c87b70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 1543297332013883663, guid: c1983b0cdce11dd4693b20760c923103, type: 3}
+  enemyDefinitions: {fileID: 11400000, guid: 57189d6162ff7ae4080ca3ea17b62ddf, type: 2}
+  m_walkSpeed: 0
+  m_runSpeed: 0
+  facingRight: 1

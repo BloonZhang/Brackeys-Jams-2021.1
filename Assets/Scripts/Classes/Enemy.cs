@@ -12,6 +12,8 @@ public class Enemy : ScriptableObject
     public bool invincibleWhileIdle;
     public float shotCooldown;
     public float aggroDistance;
+    public float walkSpeed;
+    public float runSpeed;
 
     // Complex variables
     public Sprite sprite;
@@ -21,7 +23,7 @@ public class Enemy : ScriptableObject
 
     // Other scriptable objects
     public BulletPattern bulletPattern;
-    // public AIPattern idleAI;
-    // public AIPattern aggroAI;
+    public AIPattern idleAI;
+    public AIPattern aggroAI;
 
 }

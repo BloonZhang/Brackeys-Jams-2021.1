@@ -9374,10 +9374,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BurgerEnemy
       objectReference: {fileID: 0}
-    - target: {fileID: 452141523702897389, guid: 34de5120099424b4f93b4fb49ac3b1ad, type: 3}
-      propertyPath: enemyDefinitions
-      value: 
-      objectReference: {fileID: 11400000, guid: 57189d6162ff7ae4080ca3ea17b62ddf, type: 2}
     - target: {fileID: 452141523702897391, guid: 34de5120099424b4f93b4fb49ac3b1ad, type: 3}
       propertyPath: m_RootOrder
       value: 7
