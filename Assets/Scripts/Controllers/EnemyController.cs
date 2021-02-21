@@ -12,6 +12,8 @@ public class EnemyController : MonoBehaviour
         None
     }
     */
+    // Gameobjects
+    public GameObject dessertPrefab;
 
     // Definition variables
     // ScriptableObjects
@@ -22,17 +24,20 @@ public class EnemyController : MonoBehaviour
     private int m_damage;
     private bool m_invincibleWhileIdle;
     private float m_aggroDistance;
-    public float m_walkSpeed;
-    public float m_runSpeed;
+    [HideInInspector] public float m_walkSpeed;
+    [HideInInspector] public float m_runSpeed;
     // Complex
     private GameObject m_projectilePrefab;
     private BulletPattern m_BulletPattern;
     private AIPattern m_idleAI;
     private AIPattern m_aggroAI;
+    private List<Dessert> m_possibleDrops;
+    private List<float> m_dropPercentages;
 
     // settings variables
     private float aggroYRange = 7f;      // TODO: maybe in Enemy SO? hardcode for now
     private float aggroFeathering = 2f;   // hysteresis for aggro distance
+    private Vector3 dropOffset = new Vector3(0, 0.5f, 0); // Offset for dessert drops
 
     // helper variables
     private float timer;
@@ -57,15 +62,12 @@ public class EnemyController : MonoBehaviour
         float distanceYToPlayer = Mathf.Abs(this.gameObject.transform.position.y - PlayerController.Instance.gameObject.transform.position.y);
         if (isIdle && distanceYToPlayer < aggroYRange && distanceXToPlayer < m_aggroDistance)
         {
-            Debug.Log("aggro!");
-            // TODO: face player
             isIdle = false;
             m_idleAI.StopAIPattern();
             m_aggroAI.StartAIPattern();
         }
         if (!isIdle && (distanceYToPlayer > aggroYRange + aggroFeathering || distanceXToPlayer > m_aggroDistance + aggroFeathering))
         {
-            Debug.Log("lost aggro");
             isIdle = true;
             m_aggroAI.StopAIPattern();
             m_idleAI.StartAIPattern();
@@ -135,6 +137,8 @@ public class EnemyController : MonoBehaviour
         m_BulletPattern = enemyDefinitions.bulletPattern;
         m_idleAI = enemyDefinitions.idleAI;
         m_aggroAI = enemyDefinitions.aggroAI;
+        m_possibleDrops = enemyDefinitions.possibleDrops;
+        m_dropPercentages = enemyDefinitions.dropPercentages;
 
         // Check if bullet pattern SO is valid.
         // TODO: automatic way to do this?
@@ -142,16 +146,77 @@ public class EnemyController : MonoBehaviour
         if (m_BulletPattern.numberOfBullets != m_BulletPattern.listOfAngles.Count || 
             m_BulletPattern.listOfAngles.Count != 1 + m_BulletPattern.delayBetweenBullets.Count)
         {
-            Debug.Log("ERROR with Bullet Pattern for enemy: " + m_name);
+            Debug.Log("ERROR with Bullet Pattern counts for enemy: " + m_name);
         }
+        // Check if drop table is valid
+        if (m_possibleDrops.Count != m_dropPercentages.Count)
+        {
+            Debug.Log("ERROR with counts for drop table for enemy: " + m_name);
+        }
+
+    }
+    private Dessert GetRandomDrop()
+    {
+        float rng = Random.Range(0.0f, 1.0f);
+        float rngHelper = 0f;
+        for (int i = 0; i < m_possibleDrops.Count; ++i)
+        {
+            rngHelper += m_dropPercentages[i];
+            if (rng < rngHelper) { return m_possibleDrops[i]; }
+        }
+        // Didn't get any drops
+        return null;
+    }
+    private void SpawnDrop(Dessert drop)
+    {
+        GameObject dessert = Instantiate(dessertPrefab, this.transform.position + dropOffset, Quaternion.identity);
+        dessert.GetComponent<DessertController>().dessertDefinitions = drop;
     }
     private void Death()
     {
         Debug.Log("enemy: " + this.name + " died");
         // TODO: explosion effect
+        // Potential drops
+        Dessert enemyDrop = GetRandomDrop();
+        if (enemyDrop != null) { SpawnDrop(enemyDrop); }
         Destroy(this.gameObject);
     }
 
+    /*
+    // testing item drop rate works as intended
+    private void Test()
+    {
+        int[] dropList = new int[5];
+        Dessert testDessert = null;
+        for (int i = 0; i < 10000; ++i)
+        {
+            testDessert = GetRandomDrop();
+            if (testDessert == null) { dropList[4]++; continue; }
+            switch (testDessert.name)
+            {
+                case "LargeHealth":
+                    dropList[0]++;
+                    break;
+                case "LargeSpecial":
+                    dropList[1]++;
+                    break;
+                case "SmallHealth":
+                    dropList[2]++;
+                    break;
+                case "SmallSpecial":
+                    dropList[3]++;
+                    break;
+                default:
+                    dropList[4]++;
+                    break;
+            }
+        }
+        Debug.Log("LargeHealth: " + dropList[0]);
+        Debug.Log("LargeSpecial: " + dropList[1]);
+        Debug.Log("SmallHealth: " + dropList[2]);
+        Debug.Log("SmallSpecial: " + dropList[3]);
+        Debug.Log("None: " + dropList[4]);
 
-
+    }
+    */
 }

@@ -19,6 +19,8 @@ public class Enemy : ScriptableObject
     public Vector2 shootPointOffset;
     // TODO: animation
     public GameObject bulletPrefab;
+    public List<Dessert> possibleDrops;
+    public List<float> dropPercentages;
 
     // Other scriptable objects
     public BulletPattern bulletPattern;

@@ -14,9 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Burger
   maxHealth: 4
-  attackStrength: 1
   invincibleWhileIdle: 0
-  shotCooldown: 2
   aggroDistance: 7
   walkSpeed: 5
   runSpeed: 10
@@ -24,6 +22,12 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 8fb30a0e8df6c90498a462f13c560e95, type: 3}
   shootPointOffset: {x: 0.4, y: 0}
   bulletPrefab: {fileID: 1543297332013883663, guid: c1983b0cdce11dd4693b20760c923103, type: 3}
+  possibleDrops:
+  - {fileID: 11400000, guid: ae6482348bf662e47adc2c8006d8d074, type: 2}
+  - {fileID: 11400000, guid: 3ef25e10d1526204ba566339acafb14c, type: 2}
+  dropPercentages:
+  - 0.4
+  - 0.2
   bulletPattern: {fileID: 11400000, guid: 20ae719f5cdd4384ea7ecef068b304b7, type: 2}
   idleAI: {fileID: 11400000, guid: 6b130c07883d54644b288cdc67b3ea6e, type: 2}
   aggroAI: {fileID: 11400000, guid: 6b130c07883d54644b288cdc67b3ea6e, type: 2}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f3acd5e0dc0c445b9162091d3b6909, type: 3}
   m_Name: LargeSpecial
   m_EditorClassIdentifier: 
-  name: SmallHealth
+  name: LargeSpecial
   sprite: {fileID: -2028686281678127761, guid: e2a7e85816d0d6f4d8db347072100392, type: 3}
   healing: 0
   specialRecovery: 10
