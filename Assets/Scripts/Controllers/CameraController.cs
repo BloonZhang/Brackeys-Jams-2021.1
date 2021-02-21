@@ -19,6 +19,10 @@ public class CameraController : MonoBehaviour
     //private float horizontalCameraSpeed = 1f;
     private float verticalCameraTime = 0.5f;
     private int coroutineSteps = 30;
+    private float pixelUnits = 64f;
+    // TODO: don't hardcode
+    private float leftEdge = 0f;    // left and right constrants of camera
+    private float rightEdge = 10f;
 
     // helper variabes
 
@@ -34,16 +38,24 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         mainCamera = Camera.main;
+        //Debug.Log(mainCamera.ScreenToWorldPoint(new Vector3(10f,0,0)));
     }
 
     // Update is called once per frame
     void Update()
     {
         // TODO: constrain to edges
+        /*
         mainCamera.transform.position = new Vector3(PlayerController.Instance.transform.position.x,
                                                     mainCamera.transform.position.y,
                                                     mainCamera.transform.position.z);
-    }
+        */
+        // Lock to pixel position
+        float cameraXPosition = Mathf.Round(PlayerController.Instance.transform.position.x * pixelUnits) / pixelUnits;
+        cameraXPosition = Mathf.Max(leftEdge, cameraXPosition); cameraXPosition = Mathf.Min(cameraXPosition, rightEdge);
+        mainCamera.transform.position = new Vector3(cameraXPosition,
+                                                    Mathf.Round(mainCamera.transform.position.y * pixelUnits) / pixelUnits,
+                                                    mainCamera.transform.position.z);    }
 
 
     // helper methods

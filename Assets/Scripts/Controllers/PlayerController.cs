@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float timeInvincibleAfterHit;
     //[SerializeField] private float timeStunnedAfterHit;
     private float healRate = 10f;   // How fast the player heals over time from a pickup
+    private float spriteFlashRate = 10f;// How many times a second the player's sprite flashes when hit
 
     // helper variables
     private bool invincible = false;
@@ -34,6 +35,9 @@ public class PlayerController : MonoBehaviour
     private float healthToHeal;     // determines how much health must be healed
     private float specialToRecover;
     private bool currentlyHealing = false;
+    private Coroutine spriteFlashCoroutine;
+    private float spriteFlashTimer = 0f;
+
 
 
     void Awake()
@@ -65,7 +69,7 @@ public class PlayerController : MonoBehaviour
         if (invincible)
         {
             invincibilityTimer += Time.deltaTime;
-            if (invincibilityTimer > timeInvincibleAfterHit) { invincible = false; }
+            if (invincibilityTimer > timeInvincibleAfterHit) { StopInvincible(); }
         }
         /*
         if (stunned)
@@ -126,11 +130,28 @@ public class PlayerController : MonoBehaviour
         currentlyHealing = false;
         yield return null; 
     }
+    private IEnumerator FlashSprite()
+    {
+        while(true)
+        {
+            SpriteRenderer spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
+            spriteRenderer.enabled = !spriteRenderer.enabled;
+            yield return new WaitForSeconds(1f / spriteFlashRate);
+        }
+        yield return null;
+    }
 
     // helper methods
     private void BecomeInvincible()
     {
         invincible = true; invincibilityTimer = 0f;
+        spriteFlashCoroutine = StartCoroutine(FlashSprite());
+    }
+    private void StopInvincible()
+    {
+        invincible = false;
+        StopCoroutine(spriteFlashCoroutine);
+        this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
     }
     private void BecomeStunned()
     {
